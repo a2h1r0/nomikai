@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "629433156796",
+    "project_id": "nomikai-6a1cb",
+    "storage_bucket": "nomikai-6a1cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629433156796:android:587e958e712f329f4fbcb9",
+        "android_client_info": {
+          "package_name": "com.example.nomikai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629433156796-6osubouunuiqn51sieo9dhi5ophra9p9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJSY2IWyzUmxcqKNu-gBDpmxqoe8I9hzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629433156796-6osubouunuiqn51sieo9dhi5ophra9p9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
