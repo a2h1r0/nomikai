@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nomikai/model/app_user.dart';
+import 'package:nomikai/service/user_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,6 +10,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final UserService _auth = UserService();
+
+  String email = '';
+  String password = '';
+  String message = '';
   bool _isObscure = true;
 
   @override
@@ -21,6 +28,9 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
                 child: TextFormField(
                   decoration: const InputDecoration(labelText: 'メールアドレス'),
+                  onChanged: (String value) {
+                    email = value;
+                  },
                 )),
             Padding(
               padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 10.0),
@@ -38,11 +48,39 @@ class _LoginPageState extends State<LoginPage> {
                     )),
                 obscureText: _isObscure,
                 maxLength: 20,
+                onChanged: (String value) {
+                  password = value;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 5.0),
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.red),
               ),
             ),
             ButtonTheme(
+              minWidth: 350.0,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    AppUser? user =
+                        await _auth.signInWithEmailAndPassword(email, password);
+
+                    if (user != null) {
+                      // todo: login success
+                    } else {
+                      setState(() {
+                        message = 'ユーザが見つかりませんでした．．．';
+                      });
+                    }
+                  } catch (e) {
+                    setState(() {
+                      message = e.toString();
+                    });
+                  }
+                },
                 child: const Text(
                   'ログイン',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -57,10 +95,13 @@ class _LoginPageState extends State<LoginPage> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ButtonTheme(
+            minWidth: 350.0,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // todo: move to register page
+              },
               child: const Text(
-                '新規登録',
+                'アカウントを作成する',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
