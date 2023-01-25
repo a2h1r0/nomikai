@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nomikai/model/app_user.dart';
 import 'package:nomikai/service/user_service.dart';
 import 'package:nomikai/ui/home_page/home_page.dart';
+import 'package:nomikai/ui/registration_page/registration_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     if (user != null) {
                       navigator.push(MaterialPageRoute(
-                        builder: (context) => const HomePage(),
+                        builder: (BuildContext context) => const HomePage(),
                       ));
                     } else {
                       setState(() {
@@ -102,7 +103,12 @@ class _LoginPageState extends State<LoginPage> {
             minWidth: 350.0,
             child: ElevatedButton(
               onPressed: () {
-                // todo: move to register page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => const RegistrationPage(),
+                  ),
+                );
               },
               child: const Text(
                 'アカウントを作成する',
