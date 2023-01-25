@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nomikai/model/app_user.dart';
 import 'package:nomikai/service/user_service.dart';
+import 'package:nomikai/ui/home_page/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -65,11 +66,14 @@ class _LoginPageState extends State<LoginPage> {
               child: ElevatedButton(
                 onPressed: () async {
                   try {
+                    final navigator = Navigator.of(context);
                     AppUser? user =
                         await _auth.signInWithEmailAndPassword(email, password);
 
                     if (user != null) {
-                      // todo: login success
+                      navigator.push(MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ));
                     } else {
                       setState(() {
                         message = 'ユーザが見つかりませんでした．．．';
