@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                   try {
                     final navigator = Navigator.of(context);
                     AppUser? user =
-                        await _auth.signInWithEmailAndPassword(email, password);
+                        await _auth.loginWithEmailAndPassword(email, password);
 
                     if (user != null) {
                       navigator.push(MaterialPageRoute(

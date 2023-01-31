@@ -13,7 +13,7 @@ class UserService with ChangeNotifier {
     return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
-  Future<AppUser?> signInWithEmailAndPassword(
+  Future<AppUser?> loginWithEmailAndPassword(
       String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
