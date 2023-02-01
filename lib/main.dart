@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nomikai/model/app_user.dart';
+import 'package:nomikai/service/user_service.dart';
+import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
@@ -11,7 +14,17 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        StreamProvider<AppUser?>.value(
+          value: UserService().user,
+          initialData: null,
+        )
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
