@@ -3,6 +3,7 @@ import 'package:nomikai/model/app_user.dart';
 import 'package:nomikai/service/user_service.dart';
 import 'package:nomikai/ui/home_page/home_page.dart';
 import 'package:nomikai/ui/registration_page/registration_page.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,6 +22,12 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AppUser?>(context);
+    if (user != null) {
+      // todo: リダイレクトでないが問題ない？
+      return const HomePage();
+    }
+
     return Scaffold(
       body: Center(
         child: Column(
