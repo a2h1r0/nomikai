@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nomikai/const/firebase_auth_error.dart';
 import 'package:nomikai/model/app_user.dart';
 
 class UserService with ChangeNotifier {
@@ -13,18 +14,16 @@ class UserService with ChangeNotifier {
     return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
-  Future<AppUser?> loginWithEmailAndPassword(
+  Future<FirebaseAuthResultStatus> loginWithEmailAndPassword(
       String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      User? user = result.user;
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
 
-      return _userFromFirebaseUser(user);
-    } catch (e) {
+      return FirebaseAuthResultStatus.Successful;
+    } on FirebaseAuthException catch (e) {
       print(e.toString());
 
-      return null;
+      return FirebaseAuthError().handleException(e);
     }
   }
 

@@ -68,18 +68,18 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   try {
                     final navigator = Navigator.of(context);
-                    AppUser? user =
-                        await _auth.loginWithEmailAndPassword(email, password);
+                    // AppUser? user =
+                    await _auth.loginWithEmailAndPassword(email, password);
 
-                    if (user != null) {
-                      navigator.push(MaterialPageRoute(
-                        builder: (BuildContext context) => const HomePage(),
-                      ));
-                    } else {
-                      setState(() {
-                        message = 'ユーザが見つかりませんでした．．．';
-                      });
-                    }
+                    // if (user != null) {
+                    //   navigator.push(MaterialPageRoute(
+                    //     builder: (BuildContext context) => const HomePage(),
+                    //   ));
+                    // } else {
+                    //   setState(() {
+                    //     message = 'ユーザが見つかりませんでした．．．';
+                    //   });
+                    // }
                   } catch (e) {
                     setState(() {
                       message = e.toString();
