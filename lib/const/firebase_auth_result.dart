@@ -12,7 +12,7 @@ enum FirebaseAuthResultStatus {
   Undefined,
 }
 
-class FirebaseAuthError {
+class FirebaseAuthResult {
   FirebaseAuthResultStatus handleException(FirebaseAuthException e) {
     FirebaseAuthResultStatus result;
 
