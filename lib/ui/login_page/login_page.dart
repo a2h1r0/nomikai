@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nomikai/model/app_user.dart';
+import 'package:nomikai/const/firebase_auth_result.dart';
 import 'package:nomikai/service/user_service.dart';
 import 'package:nomikai/ui/home_page/home_page.dart';
 import 'package:nomikai/ui/registration_page/registration_page.dart';
@@ -66,23 +66,17 @@ class _LoginPageState extends State<LoginPage> {
               minWidth: 350.0,
               child: ElevatedButton(
                 onPressed: () async {
-                  try {
-                    final navigator = Navigator.of(context);
-                    // AppUser? user =
-                    await _auth.loginWithEmailAndPassword(email, password);
+                  final navigator = Navigator.of(context);
+                  final FirebaseAuthResultStatus result =
+                      await _auth.loginWithEmailAndPassword(email, password);
 
-                    // if (user != null) {
-                    //   navigator.push(MaterialPageRoute(
-                    //     builder: (BuildContext context) => const HomePage(),
-                    //   ));
-                    // } else {
-                    //   setState(() {
-                    //     message = 'ユーザが見つかりませんでした．．．';
-                    //   });
-                    // }
-                  } catch (e) {
+                  if (result == FirebaseAuthResultStatus.successful) {
+                    navigator.push(MaterialPageRoute(
+                      builder: (BuildContext context) => const HomePage(),
+                    ));
+                  } else {
                     setState(() {
-                      message = e.toString();
+                      message = FirebaseAuthResult().exceptionMessage(result);
                     });
                   }
                 },

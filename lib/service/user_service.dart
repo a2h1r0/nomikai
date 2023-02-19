@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nomikai/const/firebase_auth_error.dart';
+import 'package:nomikai/const/firebase_auth_result.dart';
 import 'package:nomikai/model/app_user.dart';
 
 class UserService with ChangeNotifier {
@@ -16,29 +16,39 @@ class UserService with ChangeNotifier {
 
   Future<FirebaseAuthResultStatus> loginWithEmailAndPassword(
       String email, String password) async {
+    FirebaseAuthResultStatus result;
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
 
-      return FirebaseAuthResultStatus.Successful;
+      if (userCredential.user != null) {
+        result = FirebaseAuthResultStatus.successful;
+      } else {
+        result = FirebaseAuthResultStatus.undefined;
+      }
     } on FirebaseAuthException catch (e) {
-      print(e.toString());
-
-      return FirebaseAuthError().handleException(e);
+      result = FirebaseAuthResult().handleException(e);
     }
+
+    return result;
   }
 
-  Future<AppUser?> registerWithEmailAndPassword(
+  Future<FirebaseAuthResultStatus> registerWithEmailAndPassword(
       String email, String password) async {
+    FirebaseAuthResultStatus result;
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      User? user = result.user;
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-      return _userFromFirebaseUser(user);
-    } catch (error) {
-      print(error.toString());
-
-      return null;
+      if (userCredential.user != null) {
+        result = FirebaseAuthResultStatus.successful;
+      } else {
+        result = FirebaseAuthResultStatus.undefined;
+      }
+    } on FirebaseAuthException catch (e) {
+      result = FirebaseAuthResult().handleException(e);
     }
+
+    return result;
   }
 }

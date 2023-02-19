@@ -1,45 +1,47 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 enum FirebaseAuthResultStatus {
-  Successful,
-  InvalidEmail,
-  WrongPassword,
-  UserDisabled,
-  UserNotFound,
-  EmailAlreadyExists,
-  OperationNotAllowed,
-  TooManyRequests,
-  Undefined,
+  successful,
+  invalidEmail,
+  wrongPassword,
+  userDisabled,
+  userNotFound,
+  emailAlreadyExists,
+  operationNotAllowed,
+  tooManyRequests,
+  undefined,
 }
 
 class FirebaseAuthResult {
   FirebaseAuthResultStatus handleException(FirebaseAuthException e) {
     FirebaseAuthResultStatus result;
+    // todo: エラーコード各種追加
+    print(e.code);
 
     switch (e.code) {
       case 'invalid-email':
-        result = FirebaseAuthResultStatus.InvalidEmail;
+        result = FirebaseAuthResultStatus.invalidEmail;
         break;
       case 'wrong-password':
-        result = FirebaseAuthResultStatus.WrongPassword;
+        result = FirebaseAuthResultStatus.wrongPassword;
         break;
       case 'user-disabled':
-        result = FirebaseAuthResultStatus.UserDisabled;
+        result = FirebaseAuthResultStatus.userDisabled;
         break;
       case 'user-not-found':
-        result = FirebaseAuthResultStatus.UserNotFound;
+        result = FirebaseAuthResultStatus.userNotFound;
         break;
       case 'email-already-exists':
-        result = FirebaseAuthResultStatus.EmailAlreadyExists;
+        result = FirebaseAuthResultStatus.emailAlreadyExists;
         break;
       case 'operation-not-allowed':
-        result = FirebaseAuthResultStatus.OperationNotAllowed;
+        result = FirebaseAuthResultStatus.operationNotAllowed;
         break;
       case 'too-many-requests':
-        result = FirebaseAuthResultStatus.TooManyRequests;
+        result = FirebaseAuthResultStatus.tooManyRequests;
         break;
       default:
-        result = FirebaseAuthResultStatus.Undefined;
+        result = FirebaseAuthResultStatus.undefined;
         break;
     }
 
@@ -50,31 +52,31 @@ class FirebaseAuthResult {
     String message = '';
 
     switch (result) {
-      case FirebaseAuthResultStatus.Successful:
+      case FirebaseAuthResultStatus.successful:
         message = 'ログインに成功しました。';
         break;
-      case FirebaseAuthResultStatus.InvalidEmail:
+      case FirebaseAuthResultStatus.invalidEmail:
         message = 'メールアドレスが不正です。';
         break;
-      case FirebaseAuthResultStatus.WrongPassword:
+      case FirebaseAuthResultStatus.wrongPassword:
         message = 'パスワードが違います。';
         break;
-      case FirebaseAuthResultStatus.UserDisabled:
+      case FirebaseAuthResultStatus.userDisabled:
         message = '指定されたユーザーは無効です。';
         break;
-      case FirebaseAuthResultStatus.UserNotFound:
+      case FirebaseAuthResultStatus.userNotFound:
         message = '指定されたユーザーは存在しません。';
         break;
-      case FirebaseAuthResultStatus.EmailAlreadyExists:
+      case FirebaseAuthResultStatus.emailAlreadyExists:
         message = '指定されたメールアドレスは既に使用されています。';
         break;
-      case FirebaseAuthResultStatus.OperationNotAllowed:
+      case FirebaseAuthResultStatus.operationNotAllowed:
         message = '指定されたユーザーはこの操作を許可していません。';
         break;
-      case FirebaseAuthResultStatus.TooManyRequests:
+      case FirebaseAuthResultStatus.tooManyRequests:
         message = '指定されたユーザーはこの操作を許可していません。';
         break;
-      case FirebaseAuthResultStatus.Undefined:
+      case FirebaseAuthResultStatus.undefined:
         message = '不明なエラーが発生しました。';
         break;
       default:

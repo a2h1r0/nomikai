@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nomikai/model/app_user.dart';
+import 'package:nomikai/const/firebase_auth_result.dart';
 import 'package:nomikai/service/user_service.dart';
 import 'package:nomikai/ui/home_page/home_page.dart';
 import 'package:nomikai/ui/login_page/login_page.dart';
@@ -66,23 +66,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
               minWidth: 350.0,
               child: ElevatedButton(
                 onPressed: () async {
-                  try {
-                    final navigator = Navigator.of(context);
-                    AppUser? user = await _auth.registerWithEmailAndPassword(
-                        email, password);
+                  final navigator = Navigator.of(context);
+                  final FirebaseAuthResultStatus result =
+                      await _auth.registerWithEmailAndPassword(email, password);
 
-                    if (user != null) {
-                      navigator.push(MaterialPageRoute(
-                        builder: (BuildContext context) => const HomePage(),
-                      ));
-                    } else {
-                      setState(() {
-                        message = '新規登録に失敗しました．．．';
-                      });
-                    }
-                  } catch (e) {
+                  if (result == FirebaseAuthResultStatus.successful) {
+                    navigator.push(MaterialPageRoute(
+                      builder: (BuildContext context) => const HomePage(),
+                    ));
+                  } else {
                     setState(() {
-                      message = e.toString();
+                      message = FirebaseAuthResult().exceptionMessage(result);
                     });
                   }
                 },
