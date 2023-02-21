@@ -51,4 +51,16 @@ class UserService with ChangeNotifier {
 
     return result;
   }
+
+  Future<FirebaseAuthResultStatus> logout() async {
+    FirebaseAuthResultStatus result;
+    try {
+      await _auth.signOut();
+      result = FirebaseAuthResultStatus.successful;
+    } catch (e) {
+      result = FirebaseAuthResultStatus.undefined;
+    }
+
+    return result;
+  }
 }

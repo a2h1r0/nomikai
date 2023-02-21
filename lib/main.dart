@@ -42,7 +42,8 @@ class App extends StatelessWidget {
               return const SizedBox();
             }
 
-            if (snapshot.hasData) {
+            AppUser? user = snapshot.data;
+            if (user != null) {
               // ログイン済
               return const HomePage();
             }

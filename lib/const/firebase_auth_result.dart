@@ -77,7 +77,7 @@ class FirebaseAuthResult {
         message = '指定されたユーザーはこの操作を許可していません。';
         break;
       case FirebaseAuthResultStatus.undefined:
-        message = '不明なエラーが発生しました。';
+        message = 'システムエラーが発生しました。';
         break;
       default:
         message = 'システムエラーが発生しました。';
