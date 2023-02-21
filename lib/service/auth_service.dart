@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nomikai/const/firebase_auth_result.dart';
-import 'package:nomikai/model/app_user.dart';
+import 'package:nomikai/model/auth.dart';
 
-class UserService with ChangeNotifier {
+class AuthService with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  AppUser? _userFromFirebaseUser(User? user) {
-    return user != null ? AppUser(uid: user.uid, email: user.email!) : null;
+  Auth? _userFromFirebaseUser(User? user) {
+    return user != null ? Auth(uid: user.uid, email: user.email!) : null;
   }
 
-  Stream<AppUser?> get user {
+  Stream<Auth?> get user {
     return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
@@ -22,9 +22,9 @@ class UserService with ChangeNotifier {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      AppUser? user = _userFromFirebaseUser(userCredential.user);
+      Auth? auth = _userFromFirebaseUser(userCredential.user);
 
-      if (user != null) {
+      if (auth != null) {
         result = FirebaseAuthResultStatus.successful;
       } else {
         result = FirebaseAuthResultStatus.undefined;
@@ -42,14 +42,14 @@ class UserService with ChangeNotifier {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
-      AppUser? user = _userFromFirebaseUser(userCredential.user);
+      Auth? auth = _userFromFirebaseUser(userCredential.user);
 
-      if (user != null) {
+      if (auth != null) {
         final userData = <String, dynamic>{
-          'email': user.email,
+          'email': auth.email,
           'createdAt': Timestamp.fromDate(DateTime.now()),
         };
-        _firestore.collection('users').doc(user.uid).set(userData);
+        _firestore.collection('users').doc(auth.uid).set(userData);
 
         result = FirebaseAuthResultStatus.successful;
       } else {

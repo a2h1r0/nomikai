@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:nomikai/model/app_user.dart';
-import 'package:nomikai/service/user_service.dart';
+import 'package:nomikai/model/auth.dart';
+import 'package:nomikai/service/auth_service.dart';
 import 'package:nomikai/ui/home_page/home_page.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +18,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        StreamProvider<AppUser?>.value(
-          value: UserService().user,
+        StreamProvider<Auth?>.value(
+          value: AuthService().user,
           initialData: null,
         )
       ],
@@ -35,15 +35,15 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: StreamBuilder<AppUser?>(
-          stream: UserService().user,
+      home: StreamBuilder<Auth?>(
+          stream: AuthService().user,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const SizedBox();
             }
 
-            AppUser? user = snapshot.data;
-            if (user != null) {
+            Auth? auth = snapshot.data;
+            if (auth != null) {
               // ログイン済
               return const HomePage();
             }
