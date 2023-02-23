@@ -7,7 +7,9 @@ class UserService {
   Future<List<User>> getUserList() async {
     // todo: users空の場合の挙動を確認
     QuerySnapshot snapshot = await _firestore.collection('users').get();
-    List<User> users = snapshot.docs.map((doc) => User(uid: doc.id)).toList();
+    List<User> users = snapshot.docs
+        .map((doc) => User(uid: doc.id, createdAt: doc.get('createdAt')))
+        .toList();
 
     return users;
   }
