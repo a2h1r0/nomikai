@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nomikai/model/auth.dart';
-import 'package:provider/provider.dart';
 
 class UserPage extends StatefulWidget {
-  const UserPage({super.key});
+  final String userId;
+  const UserPage({super.key, required this.userId});
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -12,14 +11,12 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
-    String authId = context.watch<Auth?>()?.uid ?? '名無し';
-
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('ようこそ $authId',
+            Text('${widget.userId}のページです',
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ],

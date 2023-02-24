@@ -5,6 +5,7 @@ import 'package:nomikai/model/user.dart';
 import 'package:nomikai/service/auth_service.dart';
 import 'package:nomikai/service/user_service.dart';
 import 'package:nomikai/ui/login_page/login_page.dart';
+import 'package:nomikai/ui/user_page/user_page.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -71,10 +72,21 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8),
             itemCount: userList.length,
             itemBuilder: (BuildContext context, int index) {
+              final String userId = userList[index].uid;
               return Container(
                 height: 50,
                 color: Colors.amber[600],
-                child: Center(child: Text(userList[index].uid)),
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UserPage(
+                                  userId: userId,
+                                )),
+                      );
+                    },
+                    child: Text(userId)),
               );
             },
             separatorBuilder: (BuildContext context, int index) =>
