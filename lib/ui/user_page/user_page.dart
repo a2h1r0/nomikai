@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class UserPage extends StatefulWidget {
-  final String userId;
-  const UserPage({super.key, required this.userId});
+  final String username;
+  const UserPage({super.key, required this.username});
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -16,7 +16,7 @@ class _UserPageState extends State<UserPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('${widget.userId}のページです',
+            Text('${widget.username}のページです',
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ],

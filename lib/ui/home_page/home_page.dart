@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8),
             itemCount: userList.length,
             itemBuilder: (BuildContext context, int index) {
-              final String userId = userList[index].uid;
+              final String username = userList[index].username;
               return Container(
                 height: 50,
                 color: Colors.amber[600],
@@ -82,11 +82,11 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => UserPage(
-                                  userId: userId,
+                                  userId: username,
                                 )),
                       );
                     },
-                    child: Text(userId)),
+                    child: Text(username)),
               );
             },
             separatorBuilder: (BuildContext context, int index) =>

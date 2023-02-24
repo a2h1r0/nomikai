@@ -46,6 +46,7 @@ class AuthService with ChangeNotifier {
 
       if (auth != null) {
         final userData = <String, dynamic>{
+          'username': auth.uid,
           'email': auth.email,
           'createdAt': Timestamp.fromDate(DateTime.now()),
         };
