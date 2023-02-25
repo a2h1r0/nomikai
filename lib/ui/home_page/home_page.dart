@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final AuthService _auth = AuthService();
-  final List<User> userList = <User>[];
+  List<User> userList = <User>[];
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +57,10 @@ class _HomePageState extends State<HomePage> {
             child: ElevatedButton(
               onPressed: () async {
                 List<User> users = await UserService().getUserList();
+                users.removeWhere((user) => user.uid == authId);
+
                 setState(() {
-                  userList.addAll(users);
+                  userList = users;
                 });
               },
               child: const Text(
@@ -82,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => UserPage(
-                                  userId: username,
+                                  username: username,
                                 )),
                       );
                     },
