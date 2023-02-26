@@ -42,7 +42,7 @@ class _SearchPageState extends State<SearchPage> {
                         focusedBorder: InputBorder.none,
                         isDense: true,
                       ),
-                      onSubmitted: (phoneNumber) async {
+                      onChanged: (phoneNumber) async {
                         User? data = await UserService()
                             .getUserByPhoneNumber(phoneNumber);
                         setState(() {
@@ -55,9 +55,16 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
           ),
-          Text('${user?.username} のページです．',
-              style:
-                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Builder(builder: (BuildContext context) {
+            if (user != null) {
+              return Text('${user?.username} のページです．',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold));
+            }
+
+            return const Text('ユーザーが見つかりません．．．',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+          }),
         ],
       ),
     );
