@@ -21,4 +21,18 @@ class UserService {
 
     return user;
   }
+
+  Future<User?> getUserByPhoneNumber(String phoneNumber) async {
+    final QuerySnapshot snapshot = await _firestore
+        .collection('users')
+        .where('email', isEqualTo: phoneNumber)
+        .limit(1)
+        .get();
+    final QueryDocumentSnapshot? doc =
+        snapshot.size != 0 ? snapshot.docs[0] : null;
+    final User? user =
+        doc != null ? User(uid: doc.id, username: doc.get('username')) : null;
+
+    return user;
+  }
 }
