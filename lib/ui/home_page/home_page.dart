@@ -5,6 +5,7 @@ import 'package:nomikai/model/user.dart';
 import 'package:nomikai/service/auth_service.dart';
 import 'package:nomikai/service/user_service.dart';
 import 'package:nomikai/ui/login_page/login_page.dart';
+import 'package:nomikai/ui/search_page/search_page.dart';
 import 'package:nomikai/ui/user_page/user_page.dart';
 import 'package:provider/provider.dart';
 
@@ -52,6 +53,20 @@ class _HomePageState extends State<HomePage> {
           Text('ようこそ $authId',
               style:
                   const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ButtonTheme(
+            minWidth: 350.0,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => const SearchPage(),
+                ));
+              },
+              child: const Text(
+                '検索ページ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           ButtonTheme(
             minWidth: 350.0,
             child: ElevatedButton(
