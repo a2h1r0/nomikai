@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nomikai/const/firebase_auth_result.dart';
 import 'package:nomikai/service/auth_service.dart';
-import 'package:nomikai/ui/home_page/home_page.dart';
+import 'package:nomikai/ui/app.dart';
 import 'package:nomikai/ui/registration_page/registration_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   if (result == FirebaseAuthResultStatus.successful) {
                     navigator.push(MaterialPageRoute(
-                      builder: (BuildContext context) => const HomePage(),
+                      builder: (BuildContext context) => const App(),
                     ));
                   } else {
                     setState(() {
