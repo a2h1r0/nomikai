@@ -14,8 +14,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final AuthService _auth = AuthService();
 
-  String email = '';
-  String password = '';
+  String email = 'test@test.com';
+  String password = 'testtest';
   String message = '';
   bool _isObscure = true;
 
