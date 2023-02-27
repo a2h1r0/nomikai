@@ -31,46 +31,6 @@ class _HomePageState extends State<HomePage> {
             minWidth: 350.0,
             child: ElevatedButton(
               onPressed: () async {
-                final navigator = Navigator.of(context);
-                final FirebaseAuthResultStatus result = await _auth.logout();
-
-                if (result == FirebaseAuthResultStatus.successful) {
-                  navigator.push(MaterialPageRoute(
-                    builder: (BuildContext context) => const LoginPage(),
-                  ));
-                } else {
-                  String message =
-                      FirebaseAuthResult().exceptionMessage(result);
-                  print(message);
-                }
-              },
-              child: const Text(
-                'ログアウト',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          Text('ようこそ $authId',
-              style:
-                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          ButtonTheme(
-            minWidth: 350.0,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => const SearchPage(),
-                ));
-              },
-              child: const Text(
-                '検索ページ',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          ButtonTheme(
-            minWidth: 350.0,
-            child: ElevatedButton(
-              onPressed: () async {
                 List<User> users = await UserService().getUserList();
                 users.removeWhere((user) => user.uid == authId);
 

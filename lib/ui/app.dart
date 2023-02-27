@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nomikai/model/auth.dart';
 import 'package:nomikai/service/auth_service.dart';
+import 'package:nomikai/ui/auth_page/auth_page.dart';
 import 'package:nomikai/ui/home_page/home_page.dart';
 import 'package:nomikai/ui/login_page/login_page.dart';
 import 'package:nomikai/ui/search_page/search_page.dart';
@@ -42,6 +43,7 @@ class _AppWidgetState extends State<AppWidget> {
   static const List<StatefulWidget> _pages = [
     HomePage(),
     SearchPage(),
+    AuthPage()
   ];
   int _selectedIndex = 0;
 
@@ -59,6 +61,7 @@ class _AppWidgetState extends State<AppWidget> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: '検索'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
           ],
           type: BottomNavigationBarType.fixed,
         ));
