@@ -7,7 +7,10 @@ class UserService {
   Future<List<User>> getUserList() async {
     final QuerySnapshot snapshot = await _firestore.collection('users').get();
     final List<User> users = snapshot.docs
-        .map((doc) => User(uid: doc.id, username: doc.get('username')))
+        .map((doc) => User(
+            uid: doc.id,
+            username: doc.get('username'),
+            email: doc.get('email')))
         .toList();
 
     return users;
@@ -16,8 +19,10 @@ class UserService {
   Future<User?> getUser(String uid) async {
     final DocumentSnapshot doc =
         await _firestore.collection('users').doc(uid).get();
-    final User? user =
-        doc.exists ? User(uid: doc.id, username: doc.get('username')) : null;
+    final User? user = doc.exists
+        ? User(
+            uid: doc.id, username: doc.get('username'), email: doc.get('email'))
+        : null;
 
     return user;
   }
@@ -30,8 +35,10 @@ class UserService {
         .get();
     final QueryDocumentSnapshot? doc =
         snapshot.size != 0 ? snapshot.docs[0] : null;
-    final User? user =
-        doc != null ? User(uid: doc.id, username: doc.get('username')) : null;
+    final User? user = doc != null
+        ? User(
+            uid: doc.id, username: doc.get('username'), email: doc.get('email'))
+        : null;
 
     return user;
   }
