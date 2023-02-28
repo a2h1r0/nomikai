@@ -20,9 +20,9 @@ class AuthService with ChangeNotifier {
       String email, String password) async {
     FirebaseAuthResultStatus result;
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      Auth? auth = _userFromFirebaseUser(userCredential.user);
+      final UserCredential userCredential = await _auth
+          .signInWithEmailAndPassword(email: email, password: password);
+      final Auth? auth = _userFromFirebaseUser(userCredential.user);
 
       if (auth != null) {
         result = FirebaseAuthResultStatus.successful;
@@ -40,17 +40,17 @@ class AuthService with ChangeNotifier {
       String email, String password) async {
     FirebaseAuthResultStatus result;
     try {
-      UserCredential userCredential = await _auth
+      final UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
-      Auth? auth = _userFromFirebaseUser(userCredential.user);
+      final Auth? auth = _userFromFirebaseUser(userCredential.user);
 
       if (auth != null) {
-        final userData = <String, dynamic>{
+        final user = <String, dynamic>{
           'username': auth.uid,
           'email': auth.email,
           'createdAt': Timestamp.fromDate(DateTime.now()),
         };
-        _firestore.collection('users').doc(auth.uid).set(userData);
+        _firestore.collection('users').doc(auth.uid).set(user);
 
         result = FirebaseAuthResultStatus.successful;
       } else {
@@ -67,6 +67,7 @@ class AuthService with ChangeNotifier {
     FirebaseAuthResultStatus result;
     try {
       await _auth.signOut();
+
       result = FirebaseAuthResultStatus.successful;
     } catch (e) {
       result = FirebaseAuthResultStatus.undefined;
