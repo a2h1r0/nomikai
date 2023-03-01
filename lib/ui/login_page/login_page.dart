@@ -13,6 +13,10 @@ class LoginPage extends HookConsumerWidget {
     final emailTextController = TextEditingController();
     final passwordTextController = TextEditingController();
 
+    // todo: remove
+    emailTextController.text = 'test@test.com';
+    passwordTextController.text = 'testtest';
+
     final isObscure = ref.watch(isObscureProvider);
     final errorMessage = ref.watch(errorMessageProvider);
 
