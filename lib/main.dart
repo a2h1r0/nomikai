@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:nomikai/model/auth.dart';
-import 'package:nomikai/service/auth_service.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomikai/ui/app.dart';
-import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
@@ -13,15 +11,5 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(
-    MultiProvider(
-      providers: [
-        StreamProvider<Auth?>.value(
-          value: AuthService().user,
-          initialData: null,
-        )
-      ],
-      child: const App(),
-    ),
-  );
+  runApp(const ProviderScope(child: App()));
 }
