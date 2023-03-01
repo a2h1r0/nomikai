@@ -1,28 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:nomikai/const/firebase_auth_result.dart';
-import 'package:nomikai/model/auth.dart';
-import 'package:nomikai/model/user.dart';
-import 'package:nomikai/service/auth_service.dart';
-import 'package:nomikai/service/user_service.dart';
-import 'package:nomikai/ui/login_page/login_page.dart';
-import 'package:nomikai/ui/search_page/search_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nomikai/ui/home_page/home_view_model.dart';
 import 'package:nomikai/ui/user_page/user_page.dart';
-import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final AuthService _auth = AuthService();
-  List<User?> userList = <User?>[];
-
-  @override
-  Widget build(BuildContext context) {
-    String authId = context.watch<Auth?>()?.uid ?? '名無し';
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userList = ref.watch(userListProvider);
 
     return Scaffold(
       body: Column(
@@ -30,13 +16,8 @@ class _HomePageState extends State<HomePage> {
           ButtonTheme(
             minWidth: 350.0,
             child: ElevatedButton(
-              onPressed: () async {
-                List<User?> users = await UserService().getUserList();
-                users.removeWhere((user) => user!.uid == authId);
-
-                setState(() {
-                  userList = users;
-                });
+              onPressed: () {
+                getUserList(ref);
               },
               child: const Text(
                 'ユーザー一覧',
