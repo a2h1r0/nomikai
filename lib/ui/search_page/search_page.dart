@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:nomikai/model/user.dart';
-import 'package:nomikai/service/user_service.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nomikai/ui/search_page/search_view_model.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchPage extends HookConsumerWidget {
   const SearchPage({super.key});
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final TextEditingController searchTextController = TextEditingController();
 
-class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _controller = TextEditingController();
-  User? user;
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -32,7 +26,7 @@ class _SearchPageState extends State<SearchPage> {
                     width: 340,
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
                     child: TextField(
-                      controller: _controller,
+                      controller: searchTextController,
                       decoration: const InputDecoration(
                         hintText: 'Search Text',
                         prefixIcon: Icon(Icons.search),
@@ -43,11 +37,7 @@ class _SearchPageState extends State<SearchPage> {
                         isDense: true,
                       ),
                       onChanged: (phoneNumber) async {
-                        User? data = await UserService()
-                            .getUserByPhoneNumber(phoneNumber);
-                        setState(() {
-                          user = data;
-                        });
+                        getUserByPhoneNumber(ref, searchTextController.text);
                       },
                     ),
                   ),
@@ -55,9 +45,12 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
           ),
-          Builder(builder: (BuildContext context) {
+          HookConsumer(
+              builder: (BuildContext context, WidgetRef ref, Widget? child) {
+            final user = ref.watch(userProvider);
+
             if (user != null) {
-              return Text('${user?.username} のページです．',
+              return Text('${user.username} のページです．',
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold));
             }
