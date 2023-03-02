@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomikai/model/user.dart';
 import 'package:nomikai/service/user_service.dart';
 
-class UserPage extends StatefulWidget {
+class UserPage extends HookConsumerWidget {
   final String username;
   const UserPage({super.key, required this.username});
 
   @override
-  State<UserPage> createState() => _UserPageState();
-}
-
-class _UserPageState extends State<UserPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder<User?>(
-        future: UserService().getUser(widget.username),
+        future: UserService().getUser(username),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Text('読み込み中です．．．',
