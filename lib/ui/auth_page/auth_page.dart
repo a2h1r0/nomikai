@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomikai/const/firebase_auth_result.dart';
 import 'package:nomikai/model/auth.dart';
 import 'package:nomikai/model/user.dart';
-import 'package:nomikai/service/auth_service.dart';
 import 'package:nomikai/service/user_service.dart';
 import 'package:nomikai/ui/app.dart';
+import 'package:nomikai/ui/auth_page/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
-class AuthPage extends StatefulWidget {
+class AuthPage extends HookConsumerWidget {
   const AuthPage({super.key});
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final usernameTextController = TextEditingController();
+    final emailTextController = TextEditingController();
 
-class _AuthPageState extends State<AuthPage> {
-  final AuthService _auth = AuthService();
-
-  String username = '';
-  String email = '';
-
-  @override
-  Widget build(BuildContext context) {
     return FutureBuilder<User?>(
         future: UserService().getUser(context.watch<Auth?>()!.uid),
         builder: (context, snapshot) {
@@ -36,8 +30,8 @@ class _AuthPageState extends State<AuthPage> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
           }
 
-          username = user.username;
-          email = user.email;
+          usernameTextController.text = user.username;
+          emailTextController.text = user.email;
 
           return Scaffold(
             body: Column(
@@ -45,37 +39,26 @@ class _AuthPageState extends State<AuthPage> {
                 Padding(
                     padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
                     child: TextFormField(
-                      initialValue: username,
+                      controller: usernameTextController,
                       decoration: const InputDecoration(labelText: 'ユーザー名'),
-                      onChanged: (String value) {
-                        username = value;
-                      },
                     )),
                 Padding(
                     padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
                     child: TextFormField(
-                      initialValue: email,
+                      controller: emailTextController,
                       decoration: const InputDecoration(labelText: 'メールアドレス'),
-                      onChanged: (String value) {
-                        email = value;
-                      },
                     )),
                 ButtonTheme(
                   minWidth: 350.0,
                   child: ElevatedButton(
                     onPressed: () async {
                       final navigator = Navigator.of(context);
-                      final FirebaseAuthResultStatus result =
-                          await _auth.logout();
+
+                      final result = await logout(ref);
 
                       if (result == FirebaseAuthResultStatus.successful) {
                         navigator.push(MaterialPageRoute(
-                          builder: (BuildContext context) => const App(),
-                        ));
-                      } else {
-                        String message =
-                            FirebaseAuthResult().exceptionMessage(result);
-                        print(message);
+                            builder: (context) => const App()));
                       }
                     },
                     child: const Text(
