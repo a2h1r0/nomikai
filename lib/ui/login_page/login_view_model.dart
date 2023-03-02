@@ -2,8 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomikai/const/firebase_auth_result.dart';
 import 'package:nomikai/service/auth_service.dart';
 
-final AuthService _auth = AuthService();
-
 StateProvider<bool> isObscureProvider = StateProvider((ref) => true);
 StateProvider<String> errorMessageProvider = StateProvider((ref) => '');
 
@@ -15,7 +13,7 @@ void toggleObscure(WidgetRef ref) {
 Future<FirebaseAuthResultStatus> login(
     WidgetRef ref, String email, String password) async {
   final FirebaseAuthResultStatus result =
-      await _auth.loginWithEmailAndPassword(email, password);
+      await AuthService().loginWithEmailAndPassword(email, password);
 
   if (result != FirebaseAuthResultStatus.successful) {
     ref.watch(errorMessageProvider.notifier).state =
