@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:nomikai/model/auth.dart';
 import 'package:nomikai/service/auth_service.dart';
 import 'package:nomikai/ui/app_view_model.dart';
 import 'package:nomikai/ui/login_page/login_page.dart';
@@ -14,16 +15,15 @@ class App extends StatelessWidget {
       title: 'Flutter Demo',
       home: HookConsumer(
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          final auth = useMemoized(() {
-            return AuthService().user;
-          });
-          final snapshot = useStream(auth);
+          final authMemoize = useMemoized(() => AuthService().user);
+          final snapshot = useStream(authMemoize);
 
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SizedBox();
           }
 
-          if (snapshot.data != null) {
+          Auth? auth = snapshot.data;
+          if (auth != null) {
             // ログイン済
             return const AppWidget();
           }
