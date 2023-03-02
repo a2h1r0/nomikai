@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomikai/const/firebase_auth_result.dart';
-import 'package:nomikai/service/auth_service.dart';
 import 'package:nomikai/ui/app.dart';
 import 'package:nomikai/ui/login_page/login_page.dart';
+import 'package:nomikai/ui/registration_page/registration_view_model.dart';
 
-class RegistrationPage extends StatefulWidget {
+class RegistrationPage extends HookConsumerWidget {
   const RegistrationPage({super.key});
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailTextController = TextEditingController();
+    final passwordTextController = TextEditingController();
 
-class _RegistrationPageState extends State<RegistrationPage> {
-  final AuthService _auth = AuthService();
+    final isObscure = ref.watch(isObscureProvider);
+    final errorMessage = ref.watch(errorMessageProvider);
 
-  String email = '';
-  String password = '';
-  String message = '';
-  bool _isObscure = true;
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
@@ -29,36 +24,30 @@ class _RegistrationPageState extends State<RegistrationPage> {
             Padding(
                 padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
                 child: TextFormField(
+                  controller: emailTextController,
                   decoration: const InputDecoration(labelText: 'メールアドレス'),
-                  onChanged: (String value) {
-                    email = value;
-                  },
                 )),
             Padding(
               padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 10.0),
               child: TextFormField(
+                controller: passwordTextController,
                 decoration: InputDecoration(
                     labelText: 'パスワード',
                     suffixIcon: IconButton(
                       icon: Icon(
-                          _isObscure ? Icons.visibility_off : Icons.visibility),
+                          isObscure ? Icons.visibility_off : Icons.visibility),
                       onPressed: () {
-                        setState(() {
-                          _isObscure = !_isObscure;
-                        });
+                        toggleObscure(ref);
                       },
                     )),
-                obscureText: _isObscure,
+                obscureText: isObscure,
                 maxLength: 20,
-                onChanged: (String value) {
-                  password = value;
-                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 5.0),
               child: Text(
-                message,
+                errorMessage,
                 style: const TextStyle(color: Colors.red),
               ),
             ),
@@ -67,17 +56,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
               child: ElevatedButton(
                 onPressed: () async {
                   final navigator = Navigator.of(context);
-                  final FirebaseAuthResultStatus result =
-                      await _auth.registerWithEmailAndPassword(email, password);
+
+                  final result = await register(ref, emailTextController.text,
+                      passwordTextController.text);
 
                   if (result == FirebaseAuthResultStatus.successful) {
-                    navigator.push(MaterialPageRoute(
-                      builder: (BuildContext context) => const App(),
-                    ));
+                    navigator.push(
+                        MaterialPageRoute(builder: (context) => const App()));
                   } else {
-                    setState(() {
-                      message = FirebaseAuthResult().exceptionMessage(result);
-                    });
+                    emailTextController.clear();
+                    passwordTextController.clear();
                   }
                 },
                 child: const Text(
