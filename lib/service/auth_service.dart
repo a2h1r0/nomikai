@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomikai/const/firebase_auth_result.dart';
 import 'package:nomikai/model/auth.dart';
 
@@ -76,3 +77,6 @@ class AuthService with ChangeNotifier {
     return result;
   }
 }
+
+StreamProvider<Auth?> authStreamProvider =
+    StreamProvider((ref) => AuthService().user);
