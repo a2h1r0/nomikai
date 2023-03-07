@@ -14,59 +14,59 @@ class AuthPage extends HookConsumerWidget {
     final usernameTextController = TextEditingController();
     final emailTextController = TextEditingController();
 
-    final authMemoize = useMemoized(() => getAuthData(ref));
-    final snapshot = useFuture(authMemoize);
+    return ref.watch(authUserDataProvider).when(data: ((user) {
+      if (user == null) {
+        return const Text('ユーザーが見つかりませんでした．．．',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+      }
 
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Text('読み込み中です．．．',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
-    }
+      usernameTextController.text = user.username;
+      emailTextController.text = user.email;
 
-    User? user = snapshot.data;
-    if (user == null) {
-      return const Text('ユーザーが見つかりませんでした．．．',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
-    }
+      return Scaffold(
+        body: Column(
+          children: <Widget>[
+            Padding(
+                padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
+                child: TextFormField(
+                  controller: usernameTextController,
+                  decoration: const InputDecoration(labelText: 'ユーザー名'),
+                )),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
+                child: TextFormField(
+                  controller: emailTextController,
+                  decoration: const InputDecoration(labelText: 'メールアドレス'),
+                )),
+            ButtonTheme(
+              minWidth: 350.0,
+              child: ElevatedButton(
+                onPressed: () async {
+                  final navigator = Navigator.of(context);
 
-    usernameTextController.text = user.username;
-    emailTextController.text = user.email;
+                  final result = await logout(ref);
 
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
-              child: TextFormField(
-                controller: usernameTextController,
-                decoration: const InputDecoration(labelText: 'ユーザー名'),
-              )),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
-              child: TextFormField(
-                controller: emailTextController,
-                decoration: const InputDecoration(labelText: 'メールアドレス'),
-              )),
-          ButtonTheme(
-            minWidth: 350.0,
-            child: ElevatedButton(
-              onPressed: () async {
-                final navigator = Navigator.of(context);
-
-                final result = await logout(ref);
-
-                if (result == FirebaseAuthResultStatus.successful) {
-                  navigator.push(
-                      MaterialPageRoute(builder: (context) => const App()));
-                }
-              },
-              child: const Text(
-                'ログアウト',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                  if (result == FirebaseAuthResultStatus.successful) {
+                    navigator.push(
+                        MaterialPageRoute(builder: (context) => const App()));
+                  }
+                },
+                child: const Text(
+                  'ログアウト',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }), error: ((error, stackTrace) {
+      // todo: error message
+      return const Text('読み込みに失敗しました．．．',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+    }), loading: (() {
+      return const Text('読み込み中です．．．',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+    }));
   }
 }
