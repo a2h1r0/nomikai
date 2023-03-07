@@ -2,8 +2,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nomikai/const/firebase_auth_result.dart';
 import 'package:nomikai/service/auth_service.dart';
 
-StateProvider<bool> isObscureProvider = StateProvider((ref) => true);
-StateProvider<String> errorMessageProvider = StateProvider((ref) => '');
+AutoDisposeStateProvider<bool> isObscureProvider =
+    StateProvider.autoDispose((ref) => true);
+AutoDisposeStateProvider<String> errorMessageProvider =
+    StateProvider.autoDispose((ref) => '');
 
 void toggleObscure(WidgetRef ref) {
   ref.watch(isObscureProvider.notifier).state =
