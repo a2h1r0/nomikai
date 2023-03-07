@@ -4,7 +4,7 @@ import 'package:nomikai/model/user.dart';
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  User? _userFromFirebaseDocument(dynamic doc) {
+  User? _userFromFirebaseDocument(doc) {
     return doc != null
         ? User(
             uid: doc.id, username: doc.get('username'), email: doc.get('email'))

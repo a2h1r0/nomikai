@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nomikai/model/user.dart';
 import 'package:nomikai/ui/user_page/user_view_model.dart';
 
 class UserPage extends HookConsumerWidget {
@@ -8,7 +9,7 @@ class UserPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(userProvider(username)).when(data: ((user) {
+    return ref.watch(userProvider(username)).when(data: ((User? user) {
       if (user == null) {
         return const Text('ユーザーが見つかりませんでした．．．',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));

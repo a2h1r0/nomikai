@@ -14,7 +14,7 @@ class AuthPage extends HookConsumerWidget {
     final usernameTextController = TextEditingController();
     final emailTextController = TextEditingController();
 
-    return ref.watch(authUserDataProvider).when(data: ((user) {
+    return ref.watch(authUserDataProvider).when(data: ((User? user) {
       if (user == null) {
         return const Text('ユーザーが見つかりませんでした．．．',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
