@@ -5,7 +5,7 @@ import 'package:nomikai/service/auth_service.dart';
 import 'package:nomikai/service/user_service.dart';
 
 Future<User?> getAuthData(WidgetRef ref) async {
-  final auth = await ref.watch(authStreamProvider.future);
+  final auth = await ref.watch(authProvider.future);
 
   User? user = await UserService().getUser(auth!.uid);
 

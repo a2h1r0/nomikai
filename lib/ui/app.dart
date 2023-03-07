@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       title: 'Flutter Demo',
       home: HookConsumer(
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          return ref.watch(authStreamProvider).when(data: ((auth) {
+          return ref.watch(authProvider).when(data: ((auth) {
             if (auth == null) {
               // 未ログイン
               return const LoginPage();

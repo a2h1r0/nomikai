@@ -78,5 +78,5 @@ class AuthService with ChangeNotifier {
   }
 }
 
-StreamProvider<Auth?> authStreamProvider =
+StreamProvider<Auth?> authProvider =
     StreamProvider((ref) => AuthService().user);
